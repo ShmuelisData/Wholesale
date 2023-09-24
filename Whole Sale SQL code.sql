@@ -1,9 +1,3 @@
-This Database is a transactional dataset of an wholesale based and registered UK online retail, which contains all transactions between 1/12/2010 and 9/12/2011.
-The business sells unique gifts for all occasions for shops from all over the globe.
-This is a large Dataset which contains more then 500K rows for each table.
-
-
-
 --1st I cleaned duplicates in Excel. 2nd: Imported the cleaned data into SQL.
 
 --deleting some Null columns
@@ -18,11 +12,11 @@ SELECT * FROM Online_retail..y2010 y10
 
 
 
---Joining the y2010 and y2011 is broke becuase of there is no Primary Key.
---We will work on both at the same time but seperately.
+--Joining the y2010 and y2011 is broken because, there is no Primary Key.
+--We will work on both at the same time but separately.
 
 
---Calculating total revenue for Year2010
+--Calculating total revenue for the year 2010
 SELECT SUM(price*quantity) AS Yearly_Revenue
 FROM online_retail..y2010
 
@@ -35,7 +29,7 @@ FROM online_retail..y2011
 
 
 
---Looking at sales in terms of month.
+--Looking at sales in terms of the month.
 
 --2009-12
 SELECT SUM(revenue) AS Total_revenue
@@ -46,10 +40,10 @@ WHERE invoice_date BETWEEN '2009-12-01' AND '2009-12-31'
 )
 subquery_alias;
 -- $796,648.
--- In second thought, in Excel we can convert the Yearly revenue into months using Pivot Table, easly.
+-- On second thought, in Excel, we can convert the Yearly revenue into months using Pivot Table, easily.
 
 
---Looking at the top products in terms of number of sales, before calculating products returns.
+--Looking at the top products in terms of the number of sales, before calculating product returns.
 
 SELECT TOP 10 description, SUM(quantity) AS Sales_num 
 FROM Online_retail..y2010 y10
@@ -89,7 +83,7 @@ SELECT description, price, top_products * price AS Products_Revenue
 from product_revenue
 ORDER BY products_revenue DESC
 
---Here i wanted to double check if the Sum of Producs_Revenue with different prices gives the Accurate product gross share.
+--Here I'd like to double-check if the Sum of Products_Revenue with different prices gives the Accurate product gross share.
 --and it is Accurate.
 With product_revenue AS(
 SELECT description, price, SUM(quantity) AS top_products
@@ -111,9 +105,7 @@ SELECT description, price, top_products * price AS Products_Revenue
 from product_revenue
 ORDER BY products_revenue DESC
 
-
-
-
+ 
 -- Looking at the  top customers and where they are from
 SELECT TOP 100 customer_id, country, SUM(price*quantity) AS Total_Orders_value
 FROM Online_retail..y2010 y10
@@ -159,8 +151,7 @@ GROUP BY country
 ORDER BY Order_value DESC
 
 
-
--- Comparing Yearly revenue to the Product sales revenue to asure accuracy.
+-- Comparing Yearly revenue to the Product sales revenue to assure accuracy.
 
 --Taking the Top_products sales* price AS Products_revenue and Sum the Products_revenue AS Total_revenue
 
@@ -183,7 +174,7 @@ SELECT y10.quantity * y10.price AS revenue
 FROM Online_retail..y2010 y10
 ) subquery;
 
---From these querys we can see that our calculations are accurate, Same revenues.
+--From these queries, we can see that our calculations are accurate, Same revenues.
 
 
 --Looking at the average invoice value.
@@ -212,6 +203,3 @@ SELECT  invoice,  COUNT(invoice) AS Count_invoice
 FROM online_retail..y2010
 WHERE invoice IS NOT NULL
 GROUP BY invoice
-
-
-SELECT * FROM Online_retail..y2010 y10
